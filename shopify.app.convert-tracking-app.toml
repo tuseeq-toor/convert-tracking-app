@@ -1,0 +1,37 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "9104c5c7c7997b8b5c4b1769e4fbcbb3"
+application_url = "https://trailer-rachel-placing-rehab.trycloudflare.com"
+embedded = true
+name = "convert tracking app"
+handle = "convert-tracking-app"
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "lme-checkout.myshopify.com"
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2024-10"
+
+  [[webhooks.subscriptions]]
+  topics = [ "orders/paid" ]
+  uri = "/webhooks/app/order_created"
+
+  [[webhooks.subscriptions]]
+  topics = [ "products/create" ]
+  uri = "/webhooks/app/product_created"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_orders,write_products"
+
+[auth]
+redirect_urls = [
+  "https://trailer-rachel-placing-rehab.trycloudflare.com/auth/callback",
+  "https://trailer-rachel-placing-rehab.trycloudflare.com/auth/shopify/callback",
+  "https://trailer-rachel-placing-rehab.trycloudflare.com/api/auth/callback"
+]
+
+[pos]
+embedded = false
