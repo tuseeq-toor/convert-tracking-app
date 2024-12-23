@@ -1,9 +1,9 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
-client_id = "a790f0926e4a6392b217838e8f659e6a"
-application_url = "https://alleged-edges-scholarships-sleep.trycloudflare.com"
+client_id = "848175b435c6564aca4bb8b81696bd8d"
+application_url = "https://tiles-usage-immigration-baseline.trycloudflare.com"
 embedded = true
-name = "convert Tracking App"
+name = "convert-tracking-app"
 handle = "convert-tracking-app"
 
 [build]
@@ -15,26 +15,22 @@ include_config_on_deploy = true
 api_version = "2024-10"
 
   [[webhooks.subscriptions]]
-  topics = [ "orders/paid" ]
+  topics = [ "orders/create" ]
   uri = "/webhooks/app/order_created"
 
   [[webhooks.subscriptions]]
-  topics = [ "app/scopes_update" ]
-  uri = "/webhooks/app/scopes_update"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
-  uri = "/webhooks/app/uninstalled"
+  topics = [ "products/create" ]
+  uri = "/webhooks/app/product_created"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_orders,write_products,read_all_orders"
+scopes = "read_orders,write_products"
 
 [auth]
 redirect_urls = [
-  "https://alleged-edges-scholarships-sleep.trycloudflare.com/auth/callback",
-  "https://alleged-edges-scholarships-sleep.trycloudflare.com/auth/shopify/callback",
-  "https://alleged-edges-scholarships-sleep.trycloudflare.com/api/auth/callback"
+  "https://tiles-usage-immigration-baseline.trycloudflare.com/auth/callback",
+  "https://tiles-usage-immigration-baseline.trycloudflare.com/auth/shopify/callback",
+  "https://tiles-usage-immigration-baseline.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
