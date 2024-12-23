@@ -28,9 +28,9 @@ scopes = "read_orders,write_products"
 
 [auth]
 redirect_urls = [
-  "https://tiles-usage-immigration-baseline.trycloudflare.com/auth/callback",
-  "https://tiles-usage-immigration-baseline.trycloudflare.com/auth/shopify/callback",
-  "https://tiles-usage-immigration-baseline.trycloudflare.com/api/auth/callback"
+  "https://convert-tracking-app.vercel.app/auth/callback",
+  "https://convert-tracking-app.vercel.app/auth/shopify/callback",
+  "https://convert-tracking-app.vercel.app/api/auth/callback"
 ]
 
 [pos]
