@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "848175b435c6564aca4bb8b81696bd8d"
-application_url = "https://ink-jerusalem-viewpicture-think.trycloudflare.com"
+application_url = "https://convert-tracking-app.vercel.app"
 embedded = true
 name = "convert-tracking-app"
 handle = "convert-tracking-app"
@@ -28,9 +28,9 @@ scopes = "read_orders,write_products"
 
 [auth]
 redirect_urls = [
-  "https://ink-jerusalem-viewpicture-think.trycloudflare.com/auth/callback",
-  "https://ink-jerusalem-viewpicture-think.trycloudflare.com/auth/shopify/callback",
-  "https://ink-jerusalem-viewpicture-think.trycloudflare.com/api/auth/callback"
+  "https://convert-tracking-app.vercel.app/auth/callback",
+  "https://convert-tracking-app.vercel.app/auth/shopify/callback",
+  "https://convert-tracking-app.vercel.app/api/auth/callback"
 ]
 
 [pos]
