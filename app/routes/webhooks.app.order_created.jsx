@@ -19,13 +19,13 @@ export const action = async ({ request }) => {
 
   if (convertAttributesStr) {
     console.log("Convert attributes string retrieved:", convertAttributesStr);
-    postTransaction(convertAttributesStr, payload);
+    await postTransaction(convertAttributesStr, payload);
   } else {
     console.log("Convert Attributes retrieval failed.");
   }
 
   // Function to post transaction details
-  function postTransaction(convertAttributesStr, orderData) {
+  async function postTransaction(convertAttributesStr, orderData) {
     const convertAttributes = JSON.parse(convertAttributesStr);
     const conversionRate = parseFloat(convertAttributes.conversionRate) || 1; // Default to 1 if not provided
     console.log(
@@ -52,8 +52,8 @@ export const action = async ({ request }) => {
 
     // Build POST data for subscription products
     if (totalProducts > 0) {
-      postConversion(convertAttributes, revenueGoalId);
-      sendTrackingBeacon(
+      await postConversion(convertAttributes, revenueGoalId);
+      await sendTrackingBeacon(
         convertAttributes,
         totalRevenue,
         totalProducts,
