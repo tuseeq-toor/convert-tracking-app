@@ -88,11 +88,17 @@ export const action = async ({ request }) => {
     try {
       const res = await fetch(
         `https://${convertAttributes.pid}.metrics.convertexperiments.com/track`,
-        { method: "POST", body: data },
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Ensure the content type is correct
+          },
+          body: data,
+        },
       );
-      console.log("Transactional Data Successfully Sent", {
-        status: res.ok,
-        message: res.statusText,
+      console.log("Conversion Data Successfully Sent", {
+        status: res?.ok,
+        message: res?.statusText,
       });
     } catch (error) {
       console.log("Error Sending Conversion Data", error);
@@ -119,18 +125,21 @@ export const action = async ({ request }) => {
       ],
     };
     const data = JSON.stringify(post);
-    console.log("Data to send:", data);
+    console.log("Data to for Transaction:", data);
     try {
       const res = await fetch(
         `https://${attributes.pid}.metrics.convertexperiments.com/track`,
         {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json", // Ensure the content type is correct
+          },
           body: data,
         },
       );
       console.log("Transactional Data Successfully Sent", {
-        status: res.ok,
-        message: res.statusText,
+        status: res?.ok,
+        message: res?.statusText,
       });
     } catch (error) {
       console.log("Error Sending Transactional Data", error);
