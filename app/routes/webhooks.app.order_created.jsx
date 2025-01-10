@@ -99,9 +99,13 @@ export const action = async ({ request }) => {
       console.log("Conversion Data Successfully Sent", {
         status: res?.ok,
         message: res?.statusText,
+        orderNumber: payload?.order_number,
       });
     } catch (error) {
-      console.log("Error Sending Conversion Data", error);
+      console.log("Error Sending Conversion Data", {
+        error,
+        orderNumber: payload?.order_number,
+      });
     }
   }
 
@@ -140,9 +144,13 @@ export const action = async ({ request }) => {
       console.log("Transactional Data Successfully Sent", {
         status: res?.ok,
         message: res?.statusText,
+        orderNumber: payload?.order_number,
       });
     } catch (error) {
-      console.log("Error Sending Transactional Data", error);
+      console.log("Error Sending Transactional Data", {
+        error,
+        orderNumber: payload?.order_number,
+      });
     }
   }
 
