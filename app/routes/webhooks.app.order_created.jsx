@@ -63,7 +63,7 @@ export const action = async ({ request }) => {
   }
 
   //function to post conversion
-  function postConversion(convertAttributes, goalId) {
+  async function postConversion(convertAttributes, goalId) {
     console.log(
       "Convert: Triggering Conversion Shopify Customer Event with goal id:",
       goalId,
@@ -85,14 +85,22 @@ export const action = async ({ request }) => {
     };
     const data = JSON.stringify(post);
     console.log("Data for Conversion:", data);
-    fetch(
-      `https://${convertAttributes.pid}.metrics.convertexperiments.com/track`,
-      { method: "POST", body: data },
-    );
+    try {
+      const res = await fetch(
+        `https://${convertAttributes.pid}.metrics.convertexperiments.com/track`,
+        { method: "POST", body: data },
+      );
+      console.log("Transactional Data Successfully Sent", {
+        status: res.ok,
+        message: res.statusText,
+      });
+    } catch (error) {
+      console.log("Error Sending Conversion Data", error);
+    }
   }
 
   // Function to send tracking data using Beacon API
-  function sendTrackingBeacon(attributes, revenue, productCount, goalId) {
+  async function sendTrackingBeacon(attributes, revenue, productCount, goalId) {
     const post = {
       cid: attributes.cid,
       pid: attributes.pid,
@@ -112,10 +120,21 @@ export const action = async ({ request }) => {
     };
     const data = JSON.stringify(post);
     console.log("Data to send:", data);
-    fetch(`https://${attributes.pid}.metrics.convertexperiments.com/track`, {
-      method: "POST",
-      body: data,
-    });
+    try {
+      const res = await fetch(
+        `https://${attributes.pid}.metrics.convertexperiments.com/track`,
+        {
+          method: "POST",
+          body: data,
+        },
+      );
+      console.log("Transactional Data Successfully Sent", {
+        status: res.ok,
+        message: res.statusText,
+      });
+    } catch (error) {
+      console.log("Error Sending Transactional Data", error);
+    }
   }
 
   return new Response();
