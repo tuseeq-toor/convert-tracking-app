@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-import { useFetcher } from "@remix-run/react";
 import { Page, Text, Card } from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
 
