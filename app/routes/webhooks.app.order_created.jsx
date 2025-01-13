@@ -18,7 +18,7 @@ export const action = async ({ request }) => {
   async function processWebhook(shop, topic, payload) {
     console.log(`Received ${topic} webhook for ${shop}`);
 
-    console.log("Paylod: ", payload);
+    console.log("Paylod recieved for order:  ", payload?.order_number);
 
     // Webhook requests can trigger multiple times and after an app has already been uninstalled.
     // If this webhook already ran, the session may have been deleted previously.
@@ -45,14 +45,13 @@ export const action = async ({ request }) => {
         "Conversion attributes parsed successfully:",
         convertAttributes,
       );
-      console.log("Conversion rate used:", conversionRate);
       let totalRevenue = orderData.total_price;
       let totalProducts = 0;
 
       // Iterate over each product in the checkout event
       orderData.line_items.forEach((product) => {
-        console.log("Processing product:", product);
-        console.log("Line Item variant id" + product.variant_id);
+        console.log("Processing product:", product?.id);
+        console.log("Line Item variant id" + product?.variant_id);
         totalProducts += product.quantity;
       });
 
@@ -77,10 +76,7 @@ export const action = async ({ request }) => {
 
     //function to post conversion
     async function postConversion(convertAttributes, goalId) {
-      console.log(
-        "Convert: Triggering Conversion Shopify Customer Event with goal id:",
-        goalId,
-      );
+      console.log("Triggering Conversion with goal id:", goalId);
       const post = {
         cid: convertAttributes.cid,
         pid: convertAttributes.pid,
