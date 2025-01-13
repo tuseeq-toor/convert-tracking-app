@@ -7,7 +7,6 @@ export const action = async ({ request }) => {
     setTimeout(async () => {
       await processWebhook(shop, topic, payload);
     }, 0);
-    console.log("webhook processed for order : ", payload?.order_number);
     return new Response("OK", { status: 200 });
   } catch (error) {
     console.error("Error processing webhook:", error);
