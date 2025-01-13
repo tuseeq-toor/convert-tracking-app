@@ -5,7 +5,10 @@ export const action = async ({ request }) => {
     const { shop, topic, payload } = await authenticate.webhook(request);
     console.log("processing webhook");
     setTimeout(() => {
-      console.log("couldn't complete the convert API request in 5 seconds");
+      console.log(
+        "couldn't complete the convert API request in 5 seconds for order :",
+        payload?.order_number,
+      );
       return new Response("OK", { status: 200 });
     }, 4500);
     await processWebhook(shop, topic, payload);
