@@ -4,9 +4,12 @@ export const action = async ({ request }) => {
   try {
     const { shop, topic, payload } = await authenticate.webhook(request);
     console.log("processing webhook");
+    setTimeout(() => {
+      console.log("couldn't complete the convert API request in 5 seconds");
+      return new Response("OK", { status: 200 });
+    }, 4500);
     await processWebhook(shop, topic, payload);
     console.log("webhook processed");
-    return new Response("OK", { status: 200 });
   } catch (error) {
     console.error("Error processing webhook:", error);
     return new Response("Internal Server Error", { status: 500 });
@@ -15,9 +18,6 @@ export const action = async ({ request }) => {
   async function processWebhook(shop, topic, payload) {
     console.log(`Received ${topic} webhook for ${shop}`);
     console.log("Paylod recieved for order:  ", payload?.order_number);
-
-    // Webhook requests can trigger multiple times and after an app has already been uninstalled.
-    // If this webhook already ran, the session may have been deleted previously.
 
     const revenueGoalId = "100478811";
 
@@ -50,9 +50,9 @@ export const action = async ({ request }) => {
       let totalProducts = 0;
 
       // Iterate over each product in the checkout event
-      orderData.line_items.forEach((product) => {
-        totalProducts += product.quantity;
-      });
+      for (let i = 0; i < orderData.line_items.length; i++) {
+        totalProducts += orderData.line_items[i].quantity;
+      }
 
       console.log(
         "Total products:",
@@ -92,7 +92,6 @@ export const action = async ({ request }) => {
         ],
       };
       const data = JSON.stringify(post);
-      console.log("Data for Conversion:", data);
       try {
         const res = await fetch(
           `https://${convertAttributes.pid}.metrics.convertexperiments.com/track`,
@@ -142,7 +141,6 @@ export const action = async ({ request }) => {
         ],
       };
       const data = JSON.stringify(post);
-      console.log("Data to for Transaction:", data);
       try {
         const res = await fetch(
           `https://${attributes.pid}.metrics.convertexperiments.com/track`,
