@@ -3,21 +3,17 @@ import { authenticate } from "../shopify.server";
 export const action = async ({ request }) => {
   try {
     const { shop, topic, payload } = await authenticate.webhook(request);
-
-    // Immediately acknowledge the webhook
-    setTimeout(async () => {
-      // Asynchronous processing
-      await processWebhook(shop, topic, payload);
-    }, 0);
-
+    console.log("processing webhook");
+    await processWebhook(shop, topic, payload);
+    console.log("webhook processed");
     return new Response("OK", { status: 200 });
   } catch (error) {
     console.error("Error processing webhook:", error);
     return new Response("Internal Server Error", { status: 500 });
   }
+
   async function processWebhook(shop, topic, payload) {
     console.log(`Received ${topic} webhook for ${shop}`);
-
     console.log("Paylod recieved for order:  ", payload?.order_number);
 
     // Webhook requests can trigger multiple times and after an app has already been uninstalled.
@@ -26,12 +22,18 @@ export const action = async ({ request }) => {
     const revenueGoalId = "100478811";
 
     // Event subscriptions
+    if (!payload.note_attributes) {
+      console.log(
+        "could not find note_attributes for oder :",
+        payload?.order_number,
+      );
+      return;
+    }
     const convertAttributesStr = payload.note_attributes.find(
       (attr) => attr.name === "_conv_attrs",
     )?.value;
 
     if (convertAttributesStr) {
-      console.log("Convert attributes string retrieved:", convertAttributesStr);
       await postTransaction(convertAttributesStr, payload);
     } else {
       console.log("Convert Attributes retrieval failed.");
@@ -40,7 +42,6 @@ export const action = async ({ request }) => {
     // Function to post transaction details
     async function postTransaction(convertAttributesStr, orderData) {
       const convertAttributes = JSON.parse(convertAttributesStr);
-      const conversionRate = parseFloat(convertAttributes.conversionRate) || 1; // Default to 1 if not provided
       console.log(
         "Conversion attributes parsed successfully:",
         convertAttributes,
@@ -50,8 +51,6 @@ export const action = async ({ request }) => {
 
       // Iterate over each product in the checkout event
       orderData.line_items.forEach((product) => {
-        console.log("Processing product:", product?.id);
-        console.log("Line Item variant id" + product?.variant_id);
         totalProducts += product.quantity;
       });
 
@@ -64,13 +63,13 @@ export const action = async ({ request }) => {
 
       // Build POST data for subscription products
       if (totalProducts > 0) {
-        await postConversion(convertAttributes, revenueGoalId);
         await sendTrackingBeacon(
           convertAttributes,
           totalRevenue,
           totalProducts,
           revenueGoalId,
         );
+        await postConversion(convertAttributes, revenueGoalId);
       }
     }
 
@@ -100,7 +99,7 @@ export const action = async ({ request }) => {
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json", // Ensure the content type is correct
+              "Content-Type": "application/json",
             },
             body: data,
           },
@@ -112,8 +111,8 @@ export const action = async ({ request }) => {
         });
       } catch (error) {
         console.log("Error Sending Conversion Data", {
-          error,
           orderNumber: payload?.order_number,
+          error,
         });
       }
     }
@@ -162,8 +161,8 @@ export const action = async ({ request }) => {
         });
       } catch (error) {
         console.log("Error Sending Transactional Data", {
-          error,
           orderNumber: payload?.order_number,
+          error,
         });
       }
     }
