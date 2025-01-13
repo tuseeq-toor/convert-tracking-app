@@ -30,7 +30,7 @@ export const action = async ({ request }) => {
         "could not find note_attributes for oder :",
         payload?.order_number,
       );
-      return;
+      return new Response("OK", { status: 200 });
     }
     const convertAttributesStr = payload.note_attributes.find(
       (attr) => attr.name === "_conv_attrs",
