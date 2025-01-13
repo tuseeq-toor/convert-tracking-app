@@ -3,16 +3,12 @@ import { authenticate } from "../shopify.server";
 export const action = async ({ request }) => {
   try {
     const { shop, topic, payload } = await authenticate.webhook(request);
-    console.log("processing webhook");
-    setTimeout(() => {
-      console.log(
-        "couldn't complete the convert API request in 5 seconds for order :",
-        payload?.order_number,
-      );
-      return new Response("OK", { status: 200 });
-    }, 4000);
-    await processWebhook(shop, topic, payload);
-    console.log("webhook processed");
+    console.log("processing webhook for order : ", payload?.order_number);
+    setTimeout(async () => {
+      await processWebhook(shop, topic, payload);
+    }, 2000);
+    console.log("webhook processed for order : ", payload?.order_number);
+    return new Response("OK", { status: 200 });
   } catch (error) {
     console.error("Error processing webhook:", error);
     return new Response("Internal Server Error", { status: 500 });
@@ -168,5 +164,4 @@ export const action = async ({ request }) => {
       }
     }
   }
-  return new Response();
 };
