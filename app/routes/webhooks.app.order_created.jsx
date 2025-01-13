@@ -9,7 +9,7 @@ export const action = async ({ request }) => {
         "couldn't complete the convert API request in 5 seconds for order :",
         payload?.order_number,
       );
-      return new Response("OK", { status: 500 });
+      return new Response("OK", { status: 200 });
     }, 4000);
     await processWebhook(shop, topic, payload);
     console.log("webhook processed");
