@@ -8,7 +8,7 @@ export const action = async ({ request }) => {
     setTimeout(async () => {
       // Asynchronous processing
       await processWebhook(shop, topic, payload);
-    }, 1000);
+    }, 0);
 
     return new Response("OK", { status: 200 });
   } catch (error) {
